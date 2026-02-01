@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mitra</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f1f1f1;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            max-width: 600px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .results {
+            margin-top: 30px;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .btn-group button {
+            margin-top: 10px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-group button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Mitra AI</h1>
+
+    <form onsubmit="submitData(); return false;">
+        <label for="watch">Are you connected to the watch?</label>
+        <select id="watch">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+        </select>
+
+        <div id="manualInputs">
+            <label for="hr">Heart Rate (bpm):</label>
+            <input type="number" id="hr" placeholder="e.g. 72">
+
+            <label for="sleep">Sleep Time (e.g., 23:00):</label>
+            <input type="time" id="sleep">
+
+            <label for="wake">Wake Time (e.g., 07:00):</label>
+            <input type="time" id="wake">
+
+            <label for="anxiety">Anxiety/BP Level (1-10):</label>
+            <input type="number" id="anxiety" min="1" max="10" placeholder="e.g. 4">
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="results" id="results" style="display:none;"></div>
+
+    <div class="btn-group" id="actions" style="display:none;">
+        <button onclick="playMusic()">🎵 Play Sleep Music</button>
+        <button onclick="openExercise()">🏋 Watch Exercise Video</button>
+        <button onclick="openChat()">🤖 Open AI Chat (ChatGPT)</button>
+        <button onclick="openVoice()">🎤 Anime Voice Assistant</button>
+    </div>
+</div>
+
+<script>
+    const watchSelect = document.getElementById("watch");
+    const manualInputs = document.getElementById("manualInputs");
+    const resultsDiv = document.getElementById("results");
+    const actionsDiv = document.getElementById("actions");
+
+    watchSelect.addEventListener('change', () => {
+        manualInputs.style.display = watchSelect.value === 'no' ? 'block' : 'none';
+    });
+
+    function submitData() {
+        let hr, sleep, wake, anxiety;
+
+        if (watchSelect.value === 'yes') {
+            // Simulated data
+            hr = Math.floor(Math.random() * (90 - 60 + 1)) + 60;
+            sleep = "23:00";
+            wake = "07:00";
+            anxiety = Math.floor(Math.random() * 10) + 1;
+        } else {
+            hr = parseInt(document.getElementById("hr").value || "70");
+            sleep = document.getElementById("sleep").value || "23:00";
+            wake = document.getElementById("wake").value || "07:00";
+            anxiety = parseInt(document.getElementById("anxiety").value || "5");
+        }
+
+        const sleepHours = calculateSleepHours(sleep, wake);
+
+        let summary = `
+            <strong>❤ Heart Rate:</strong> ${hr} bpm<br>
+            <strong>🧘 Anxiety Level:</strong> ${anxiety}/10<br>
+            <strong>😴 Sleep Duration:</strong> ${sleepHours} hours<br>
+        `;
+
+        if (sleepHours < 6) {
+            summary += `<p style="color:red;"><strong>⚠ Irregular sleep detected. Recommended to listen to relaxing music.</strong></p>`;
+        } else {
+            summary += `<p style="color:green;"><strong>✅ Good sleep duration!</strong></p>`;
+        }
+
+        resultsDiv.innerHTML = summary;
+        resultsDiv.style.display = 'block';
+        actionsDiv.style.display = 'block';
+    }
+
+    function calculateSleepHours(sleep, wake) {
+        try {
+            const [sh, sm] = sleep.split(":").map(Number);
+            const [wh, wm] = wake.split(":").map(Number);
+
+            let sleepMinutes = sh * 60 + sm;
+            let wakeMinutes = wh * 60 + wm;
+
+            let duration = wakeMinutes > sleepMinutes
+                ? wakeMinutes - sleepMinutes
+                : (1440 - sleepMinutes + wakeMinutes);
+
+            return Math.floor(duration / 60);
+        } catch {
+            return 7;
+        }
+    }
+
+    function playMusic() {
+        window.open("https://www.youtube.com/watch?v=1ZYbU82GVz4", "_blank");
+    }
+
+    function openExercise() {
+        window.open("https://www.youtube.com/watch?v=UBMk30rjy0o", "_blank");
+    }
+
+    function openChat() {
+        window.open("https://chat.openai.com/", "_blank");
+    }
+
+    function openVoice() {
+        window.open("https://chat.openai.com/", "_blank"); // Placeholder for anime voice assistant
+    }
+</script>
+</body>
+</html>
