@@ -36,6 +36,11 @@ The name **“Mitra”** means *Friend*, representing a supportive AI companion 
 3. Open `mitra.html` in any modern web browser  
 No additional setup is required.
 ---
+## 🔗 Live Demo
+
+View the project live here:  
+[https://chandana-builds.github.io/Mitra-AI/](https://chandana-builds.github.io/Mitra-AI/)
+---
 ## 🎯 Project Objective
 - Promote mental health awareness  
 - Practice form handling and JavaScript logic  
